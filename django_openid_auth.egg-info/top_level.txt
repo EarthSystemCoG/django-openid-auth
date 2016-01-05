@@ -1,0 +1,2 @@
+example_consumer
+django_openid_auth

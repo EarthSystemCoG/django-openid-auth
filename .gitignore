@@ -1,0 +1,21 @@
+# Eclipse configuration files
+.project
+.pydevproject
+.settings/
+
+# Compiled files
+*.pyc
+
+# static files
+static/
+
+# site media
+site_media/
+
+# database directory
+database/
+
+# setuptools artifacts
+cog.egg-info/
+dist/
+build/
