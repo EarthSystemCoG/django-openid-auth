@@ -64,6 +64,13 @@ from django_openid_auth.exceptions import (
 
 next_url_re = re.compile('^/[-\w/]+$')
 
+def get_query_dict(request):
+    '''Utiity method to return the query dictionary for a GET or POST request.'''
+    
+    if request.method == 'POST':
+        return request.POST
+    else:
+        return request.GET
 
 def is_valid_next_url(next):
     # When we allow this:
@@ -144,7 +151,7 @@ def parse_openid_response(request):
     current_url = request.build_absolute_uri()
 
     consumer = make_consumer(request)
-    return consumer.complete(dict(request.REQUEST.items()), current_url)
+    return consumer.complete(dict(get_query_dict(request).items()), current_url)
 
 
 def login_begin(request, template_name='openid/login.html',
@@ -153,7 +160,7 @@ def login_begin(request, template_name='openid/login.html',
                 render_failure=default_render_failure,
                 redirect_field_name=REDIRECT_FIELD_NAME):
     """Begin an OpenID login request, possibly asking for an identity URL."""
-    redirect_to = request.REQUEST.get(redirect_field_name, '')
+    redirect_to = get_query_dict(request).get(redirect_field_name, '')
 
     # Get the OpenID URL to try.  First see if we've been configured
     # to use a fixed server URL.
@@ -277,7 +284,7 @@ def login_begin(request, template_name='openid/login.html',
 @csrf_exempt
 def login_complete(request, redirect_field_name=REDIRECT_FIELD_NAME,
                    render_failure=None):
-    redirect_to = request.REQUEST.get(redirect_field_name, '')
+    redirect_to = get_query_dict(request).get(redirect_field_name, '')
     render_failure = (
         render_failure or getattr(settings, 'OPENID_RENDER_FAILURE', None) or
         default_render_failure)
