@@ -39,7 +39,7 @@ from django.contrib.auth import (
 from django.contrib.auth.models import Group
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from django.template import RequestContext
 from django.template.loader import render_to_string
 try:
@@ -177,9 +177,7 @@ def login_begin(request, template_name='openid/login.html',
         # Invalid or no form data:
         if openid_url is None:
             context = {'form': login_form, redirect_field_name: redirect_to}
-            return render_to_response(
-                template_name, context,
-                context_instance=RequestContext(request))
+            return render_to_response(request, template_name, context)
 
     consumer = make_consumer(request)
     try:
