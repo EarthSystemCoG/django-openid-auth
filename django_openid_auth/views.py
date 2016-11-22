@@ -176,7 +176,7 @@ def login_begin(request, template_name='openid/login.html',
         # Invalid or no form data:
         if openid_url is None:
             context = {'form': login_form, redirect_field_name: redirect_to}
-            return render_to_response(request, template_name, context)
+            return render(request, template_name, context)
 
     consumer = make_consumer(request)
     try:
